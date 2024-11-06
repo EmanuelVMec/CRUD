@@ -19,7 +19,7 @@ def producto_lista(request):
     return render(request, 'app/producto_lista.html', {'form': productos})
 
 #Actualizar
-def productos_editar(request, id):
+def producto_editar(request, id):
     producto = get_list_or_404(Producto, id=id)
     if request.method == "POST":
         form = ProductoForm(request.POST, instance=producto)
@@ -31,7 +31,7 @@ def productos_editar(request, id):
     return render(request, 'app/producto_form.html', {'form': form})
 
 #Eliminar
-def productos_editar(request, id):
+def producto_eliminar(request, id):
     producto = get_list_or_404(Producto, id=id)
     if request.method == "POST":
         producto.delete()
