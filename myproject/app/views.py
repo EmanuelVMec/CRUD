@@ -1,26 +1,26 @@
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto
 from .forms import ProductoForm
 
-# Create your views here.
+# Crear
 def producto_crear(request):
     if request.method == "POST":
         form = ProductoForm(request.POST)
-        if form.is_valud():
+        if form.is_valid():
             form.save()
             return redirect('producto_lista')
-        else:
-            form = ProductoForm()
-        return render(request, 'app/producto_form.html', {'form': form})
+    else:
+        form = ProductoForm()
+    return render(request, 'app/producto_form.html', {'form': form})
 
-#leer
+# Leer
 def producto_lista(request):
     productos = Producto.objects.all()
-    return render(request, 'app/producto_lista.html', {'form': productos})
+    return render(request, 'app/producto_lista.html', {'productos': productos})
 
-#Actualizar
+# Actualizar
 def producto_editar(request, id):
-    producto = get_list_or_404(Producto, id=id)
+    producto = get_object_or_404(Producto, id=id)
     if request.method == "POST":
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
@@ -30,10 +30,10 @@ def producto_editar(request, id):
         form = ProductoForm(instance=producto)
     return render(request, 'app/producto_form.html', {'form': form})
 
-#Eliminar
+# Eliminar
 def producto_eliminar(request, id):
-    producto = get_list_or_404(Producto, id=id)
+    producto = get_object_or_404(Producto, id=id)
     if request.method == "POST":
         producto.delete()
         return redirect('producto_lista')
-    return render(request, 'app/producto_confirm_delete.html', {'form': producto})
+    return render(request, 'app/producto_confirm_delete.html', {'producto': producto})
